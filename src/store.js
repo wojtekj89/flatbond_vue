@@ -4,6 +4,7 @@ import axios from "axios";
 import { reject } from "q";
 
 Vue.use(Vuex);
+axios.defaults.baseURL = "http://localhost:5000";
 
 export default new Vuex.Store({
   state: {
@@ -33,7 +34,7 @@ export default new Vuex.Store({
 
   actions: {
     getConfig(context, id) {
-      return new Promise((resolve, rejext) => {
+      return new Promise((resolve, reject) => {
         axios
           .get("/config/" + id)
           .then(response => {
@@ -41,7 +42,7 @@ export default new Vuex.Store({
             resolve(response.data.config);
           })
           .catch(err => {
-            reject(response);
+            reject(err);
           });
       });
     },
@@ -49,7 +50,7 @@ export default new Vuex.Store({
     postFlatbond(context, data) {
       return new Promise((resolve, reject) => {
         axios
-          .post("/flatbond")
+          .post("/flatbond", data)
           .then(response => {
             context.commit("createFlatbond", response.data.flatbond);
             resolve(response);
