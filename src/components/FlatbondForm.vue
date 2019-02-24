@@ -40,10 +40,10 @@
       <v-flex xs12 md6 offset-md3>
         <v-layout row wrap>
           <v-flex xs6>
-            <v-btn large>clear</v-btn>
+            <v-btn block large>clear</v-btn>
           </v-flex>
           <v-flex xs6>
-            <v-btn large>Submit</v-btn>
+            <v-btn block large>Submit</v-btn>
           </v-flex>
         </v-layout>
       </v-flex>
