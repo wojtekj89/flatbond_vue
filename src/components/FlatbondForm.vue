@@ -68,7 +68,7 @@ export default {
           "Minimum weekly rent is 25£, maximum 2000£.",
         monthly: x =>
           (x >= 110 && x <= 8660) ||
-          "Minimum monthly rent is 110£, maximum 2000£."
+          "Minimum monthly rent is 110£, maximum 8660£."
       },
       id: 1223, // 123 - fixed fee, 321 - non fixed fee with fake amount
       fee: 0,
@@ -83,9 +83,7 @@ export default {
   },
   watch: {
     rent: function() {
-      console.log("counting " + this.fee);
       this.calculateFee();
-      console.log("counterd " + this.fee);
     }
   },
   mounted() {
@@ -119,19 +117,26 @@ export default {
           this.fee = this.config.fixed_membership_amount / 100;
       } else if (this.weekly) this.fee = this.rent * 1.2;
       else this.fee = (this.rent / 4.4) * 1.2; // 1 month = 4.4 weeks
-      if (this.fee < 120) this.fee = 120;
+      if (this.fee < 144) this.fee = 144;
     },
     submit() {
-      console.log("submit");
       if (!this.weekly) this.rent /= 4.4; // monthly to weekly
-      this.$store.dispatch("postFlatbond", {
-        rent: Math.floor(this.rent * 100), // weekly rent in pences
-        membership_fee: this.fee,
-        postcode: this.postcode
-      });
+      this.$store
+        .dispatch("postFlatbond", {
+          rent: Math.floor(this.rent * 100), // weekly rent in pences
+          membership_fee: Math.round(this.fee * 100), // fee in pences
+          postcode: this.postcode,
+          client_id: this.id
+        })
+        .then(result => {
+          console.log(result);
+        })
+        .catch(err => {
+          console.log(err.response);
+        });
     },
     clear() {
-      this.$refs.form.reset();
+      this.$refs.flatbondForm.reset();
     }
   }
 };
