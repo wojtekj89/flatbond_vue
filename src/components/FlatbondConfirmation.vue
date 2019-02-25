@@ -2,10 +2,10 @@
   <v-container>
     <v-layout>
       <v-flex xs12 md4 offset-md4>
-        <h1 class="display-3">Flatbond created</h1>
+        <h1>Flatbond created</h1>
         <p>
           <span class="title">Rent:</span>
-          {{flatbond.rent/100}}£ per week, {{(flatbond.rent / 100 * 4.4).toFixed(2)}}£ per month
+          {{Math.round(flatbond.rent/100)}}£ per week, {{(Math.round(flatbond.rent / 100 * 4.4)).toFixed(2)}}£ per month
         </p>
         <p>
           <span class="title">Membership fee:</span>

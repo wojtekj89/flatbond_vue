@@ -129,10 +129,11 @@ export default {
       if (this.fee < 144) this.fee = 144; // minimum fee
     },
     submit() {
-      if (!this.weekly) this.rent /= 4.4; // monthly to weekly
+      let weeklyRent = Object.assign({}, this.rent);
+      if (!this.weekly) weeklyRent = this.rent / 4.4; // monthly to weekly
       this.$store
         .dispatch("postFlatbond", {
-          rent: Math.floor(this.rent * 100), // weekly rent in pences
+          rent: Math.floor(weeklyRent * 100), // weekly rent in pences
           membership_fee: Math.round(this.fee * 100), // fee in pences
           postcode: this.postcode,
           client_id: this.id
@@ -141,6 +142,7 @@ export default {
           this.$router.push({ name: "confirmation" });
         })
         .catch(err => {
+          this.$refs.flatbondForm.validate();
           this.error = err.response.data.msg;
         });
     },
